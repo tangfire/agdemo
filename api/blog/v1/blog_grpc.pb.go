@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BlogService_CreateArticle_FullMethodName = "/blog.v1.BlogService/CreateArticle"
-	BlogService_UpdateArticle_FullMethodName = "/blog.v1.BlogService/UpdateArticle"
-	BlogService_DeleteArticle_FullMethodName = "/blog.v1.BlogService/DeleteArticle"
-	BlogService_GetArticle_FullMethodName    = "/blog.v1.BlogService/GetArticle"
-	BlogService_ListArticle_FullMethodName   = "/blog.v1.BlogService/ListArticle"
+	BlogService_CreateArticle_FullMethodName   = "/blog.v1.BlogService/CreateArticle"
+	BlogService_UpdateArticle_FullMethodName   = "/blog.v1.BlogService/UpdateArticle"
+	BlogService_DeleteArticle_FullMethodName   = "/blog.v1.BlogService/DeleteArticle"
+	BlogService_GetArticle_FullMethodName      = "/blog.v1.BlogService/GetArticle"
+	BlogService_ListArticle_FullMethodName     = "/blog.v1.BlogService/ListArticle"
+	BlogService_ArticleCastJson_FullMethodName = "/blog.v1.BlogService/ArticleCastJson"
 )
 
 // BlogServiceClient is the client API for BlogService service.
@@ -35,6 +36,7 @@ type BlogServiceClient interface {
 	DeleteArticle(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleReply, error)
 	GetArticle(ctx context.Context, in *GetArticleRequest, opts ...grpc.CallOption) (*GetArticleReply, error)
 	ListArticle(ctx context.Context, in *ListArticleRequest, opts ...grpc.CallOption) (*ListArticleReply, error)
+	ArticleCastJson(ctx context.Context, in *ArticleCastJsonRequest, opts ...grpc.CallOption) (*ArticleCastJsonReply, error)
 }
 
 type blogServiceClient struct {
@@ -95,6 +97,16 @@ func (c *blogServiceClient) ListArticle(ctx context.Context, in *ListArticleRequ
 	return out, nil
 }
 
+func (c *blogServiceClient) ArticleCastJson(ctx context.Context, in *ArticleCastJsonRequest, opts ...grpc.CallOption) (*ArticleCastJsonReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ArticleCastJsonReply)
+	err := c.cc.Invoke(ctx, BlogService_ArticleCastJson_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlogServiceServer is the server API for BlogService service.
 // All implementations must embed UnimplementedBlogServiceServer
 // for forward compatibility.
@@ -104,6 +116,7 @@ type BlogServiceServer interface {
 	DeleteArticle(context.Context, *DeleteArticleRequest) (*DeleteArticleReply, error)
 	GetArticle(context.Context, *GetArticleRequest) (*GetArticleReply, error)
 	ListArticle(context.Context, *ListArticleRequest) (*ListArticleReply, error)
+	ArticleCastJson(context.Context, *ArticleCastJsonRequest) (*ArticleCastJsonReply, error)
 	mustEmbedUnimplementedBlogServiceServer()
 }
 
@@ -128,6 +141,9 @@ func (UnimplementedBlogServiceServer) GetArticle(context.Context, *GetArticleReq
 }
 func (UnimplementedBlogServiceServer) ListArticle(context.Context, *ListArticleRequest) (*ListArticleReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListArticle not implemented")
+}
+func (UnimplementedBlogServiceServer) ArticleCastJson(context.Context, *ArticleCastJsonRequest) (*ArticleCastJsonReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ArticleCastJson not implemented")
 }
 func (UnimplementedBlogServiceServer) mustEmbedUnimplementedBlogServiceServer() {}
 func (UnimplementedBlogServiceServer) testEmbeddedByValue()                     {}
@@ -240,6 +256,24 @@ func _BlogService_ListArticle_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BlogService_ArticleCastJson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ArticleCastJsonRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogServiceServer).ArticleCastJson(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogService_ArticleCastJson_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogServiceServer).ArticleCastJson(ctx, req.(*ArticleCastJsonRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BlogService_ServiceDesc is the grpc.ServiceDesc for BlogService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var BlogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListArticle",
 			Handler:    _BlogService_ListArticle_Handler,
+		},
+		{
+			MethodName: "ArticleCastJson",
+			Handler:    _BlogService_ArticleCastJson_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

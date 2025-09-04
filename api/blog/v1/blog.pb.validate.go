@@ -1318,3 +1318,233 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListArticleReplyValidationError{}
+
+// Validate checks the field values on ArticleCastJsonRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ArticleCastJsonRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ArticleCastJsonRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ArticleCastJsonRequestMultiError, or nil if none found.
+func (m *ArticleCastJsonRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ArticleCastJsonRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetId() <= 0 {
+		err := ArticleCastJsonRequestValidationError{
+			field:  "Id",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetTitle()); l < 5 || l > 50 {
+		err := ArticleCastJsonRequestValidationError{
+			field:  "Title",
+			reason: "value length must be between 5 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Content
+
+	if len(errors) > 0 {
+		return ArticleCastJsonRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ArticleCastJsonRequestMultiError is an error wrapping multiple validation
+// errors returned by ArticleCastJsonRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ArticleCastJsonRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ArticleCastJsonRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ArticleCastJsonRequestMultiError) AllErrors() []error { return m }
+
+// ArticleCastJsonRequestValidationError is the validation error returned by
+// ArticleCastJsonRequest.Validate if the designated constraints aren't met.
+type ArticleCastJsonRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ArticleCastJsonRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ArticleCastJsonRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ArticleCastJsonRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ArticleCastJsonRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ArticleCastJsonRequestValidationError) ErrorName() string {
+	return "ArticleCastJsonRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ArticleCastJsonRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sArticleCastJsonRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ArticleCastJsonRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ArticleCastJsonRequestValidationError{}
+
+// Validate checks the field values on ArticleCastJsonReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ArticleCastJsonReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ArticleCastJsonReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ArticleCastJsonReplyMultiError, or nil if none found.
+func (m *ArticleCastJsonReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ArticleCastJsonReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Json
+
+	if len(errors) > 0 {
+		return ArticleCastJsonReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ArticleCastJsonReplyMultiError is an error wrapping multiple validation
+// errors returned by ArticleCastJsonReply.ValidateAll() if the designated
+// constraints aren't met.
+type ArticleCastJsonReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ArticleCastJsonReplyMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ArticleCastJsonReplyMultiError) AllErrors() []error { return m }
+
+// ArticleCastJsonReplyValidationError is the validation error returned by
+// ArticleCastJsonReply.Validate if the designated constraints aren't met.
+type ArticleCastJsonReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ArticleCastJsonReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ArticleCastJsonReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ArticleCastJsonReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ArticleCastJsonReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ArticleCastJsonReplyValidationError) ErrorName() string {
+	return "ArticleCastJsonReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ArticleCastJsonReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sArticleCastJsonReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ArticleCastJsonReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ArticleCastJsonReplyValidationError{}

@@ -19,6 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationBlogServiceArticleCastJson = "/blog.v1.BlogService/ArticleCastJson"
 const OperationBlogServiceCreateArticle = "/blog.v1.BlogService/CreateArticle"
 const OperationBlogServiceDeleteArticle = "/blog.v1.BlogService/DeleteArticle"
 const OperationBlogServiceGetArticle = "/blog.v1.BlogService/GetArticle"
@@ -26,6 +27,7 @@ const OperationBlogServiceListArticle = "/blog.v1.BlogService/ListArticle"
 const OperationBlogServiceUpdateArticle = "/blog.v1.BlogService/UpdateArticle"
 
 type BlogServiceHTTPServer interface {
+	ArticleCastJson(context.Context, *ArticleCastJsonRequest) (*ArticleCastJsonReply, error)
 	CreateArticle(context.Context, *CreateArticleRequest) (*CreateArticleReply, error)
 	DeleteArticle(context.Context, *DeleteArticleRequest) (*DeleteArticleReply, error)
 	GetArticle(context.Context, *GetArticleRequest) (*GetArticleReply, error)
@@ -40,6 +42,7 @@ func RegisterBlogServiceHTTPServer(s *http.Server, srv BlogServiceHTTPServer) {
 	r.DELETE("/v1/article/{id}", _BlogService_DeleteArticle0_HTTP_Handler(srv))
 	r.GET("/v1/article/{id}", _BlogService_GetArticle0_HTTP_Handler(srv))
 	r.GET("/v1/article", _BlogService_ListArticle0_HTTP_Handler(srv))
+	r.POST("/v1/article/castjson", _BlogService_ArticleCastJson0_HTTP_Handler(srv))
 }
 
 func _BlogService_CreateArticle0_HTTP_Handler(srv BlogServiceHTTPServer) func(ctx http.Context) error {
@@ -152,7 +155,30 @@ func _BlogService_ListArticle0_HTTP_Handler(srv BlogServiceHTTPServer) func(ctx 
 	}
 }
 
+func _BlogService_ArticleCastJson0_HTTP_Handler(srv BlogServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ArticleCastJsonRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationBlogServiceArticleCastJson)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ArticleCastJson(ctx, req.(*ArticleCastJsonRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ArticleCastJsonReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type BlogServiceHTTPClient interface {
+	ArticleCastJson(ctx context.Context, req *ArticleCastJsonRequest, opts ...http.CallOption) (rsp *ArticleCastJsonReply, err error)
 	CreateArticle(ctx context.Context, req *CreateArticleRequest, opts ...http.CallOption) (rsp *CreateArticleReply, err error)
 	DeleteArticle(ctx context.Context, req *DeleteArticleRequest, opts ...http.CallOption) (rsp *DeleteArticleReply, err error)
 	GetArticle(ctx context.Context, req *GetArticleRequest, opts ...http.CallOption) (rsp *GetArticleReply, err error)
@@ -166,6 +192,19 @@ type BlogServiceHTTPClientImpl struct {
 
 func NewBlogServiceHTTPClient(client *http.Client) BlogServiceHTTPClient {
 	return &BlogServiceHTTPClientImpl{client}
+}
+
+func (c *BlogServiceHTTPClientImpl) ArticleCastJson(ctx context.Context, in *ArticleCastJsonRequest, opts ...http.CallOption) (*ArticleCastJsonReply, error) {
+	var out ArticleCastJsonReply
+	pattern := "/v1/article/castjson"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationBlogServiceArticleCastJson))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *BlogServiceHTTPClientImpl) CreateArticle(ctx context.Context, in *CreateArticleRequest, opts ...http.CallOption) (*CreateArticleReply, error) {

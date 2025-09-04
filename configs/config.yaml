@@ -13,5 +13,7 @@ data:
     max_open_conns: 100
   redis:
     addr: 127.0.0.1:6379
+    db: 0
+    password: "8888.216"
     read_timeout: 0.2s
     write_timeout: 0.2s

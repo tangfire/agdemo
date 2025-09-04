@@ -539,6 +539,110 @@ func (x *ListArticleReply) GetResults() []*Article {
 	return nil
 }
 
+type ArticleCastJsonRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"` // the title of string must be between 5 and 50 character;
+	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ArticleCastJsonRequest) Reset() {
+	*x = ArticleCastJsonRequest{}
+	mi := &file_api_blog_v1_blog_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ArticleCastJsonRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArticleCastJsonRequest) ProtoMessage() {}
+
+func (x *ArticleCastJsonRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_blog_v1_blog_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArticleCastJsonRequest.ProtoReflect.Descriptor instead.
+func (*ArticleCastJsonRequest) Descriptor() ([]byte, []int) {
+	return file_api_blog_v1_blog_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ArticleCastJsonRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *ArticleCastJsonRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *ArticleCastJsonRequest) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+type ArticleCastJsonReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Json          string                 `protobuf:"bytes,1,opt,name=json,proto3" json:"json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ArticleCastJsonReply) Reset() {
+	*x = ArticleCastJsonReply{}
+	mi := &file_api_blog_v1_blog_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ArticleCastJsonReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArticleCastJsonReply) ProtoMessage() {}
+
+func (x *ArticleCastJsonReply) ProtoReflect() protoreflect.Message {
+	mi := &file_api_blog_v1_blog_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArticleCastJsonReply.ProtoReflect.Descriptor instead.
+func (*ArticleCastJsonReply) Descriptor() ([]byte, []int) {
+	return file_api_blog_v1_blog_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ArticleCastJsonReply) GetJson() string {
+	if x != nil {
+		return x.Json
+	}
+	return ""
+}
+
 var File_api_blog_v1_blog_proto protoreflect.FileDescriptor
 
 const file_api_blog_v1_blog_proto_rawDesc = "" +
@@ -569,14 +673,21 @@ const file_api_blog_v1_blog_proto_rawDesc = "" +
 	"\aArticle\x18\x01 \x01(\v2\x10.blog.v1.ArticleR\aArticle\"\x14\n" +
 	"\x12ListArticleRequest\">\n" +
 	"\x10ListArticleReply\x12*\n" +
-	"\aresults\x18\x01 \x03(\v2\x10.blog.v1.ArticleR\aresults2\xfd\x03\n" +
+	"\aresults\x18\x01 \x03(\v2\x10.blog.v1.ArticleR\aresults\"l\n" +
+	"\x16ArticleCastJsonRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\x1f\n" +
+	"\x05title\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12\x18\n" +
+	"\acontent\x18\x03 \x01(\tR\acontent\"*\n" +
+	"\x14ArticleCastJsonReply\x12\x12\n" +
+	"\x04json\x18\x01 \x01(\tR\x04json2\xf1\x04\n" +
 	"\vBlogService\x12c\n" +
 	"\rCreateArticle\x12\x1d.blog.v1.CreateArticleRequest\x1a\x1b.blog.v1.CreateArticleReply\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/article\x12h\n" +
 	"\rUpdateArticle\x12\x1d.blog.v1.UpdateArticleRequest\x1a\x1b.blog.v1.UpdateArticleReply\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\x1a\x10/v1/article/{id}\x12e\n" +
 	"\rDeleteArticle\x12\x1d.blog.v1.DeleteArticleRequest\x1a\x1b.blog.v1.DeleteArticleReply\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/v1/article/{id}\x12\\\n" +
 	"\n" +
 	"GetArticle\x12\x1a.blog.v1.GetArticleRequest\x1a\x18.blog.v1.GetArticleReply\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/article/{id}\x12Z\n" +
-	"\vListArticle\x12\x1b.blog.v1.ListArticleRequest\x1a\x19.blog.v1.ListArticleReply\"\x13\x82\xd3\xe4\x93\x02\r\x12\v/v1/articleB\x17Z\x15agdemo/api/blog/v1;v1b\x06proto3"
+	"\vListArticle\x12\x1b.blog.v1.ListArticleRequest\x1a\x19.blog.v1.ListArticleReply\"\x13\x82\xd3\xe4\x93\x02\r\x12\v/v1/article\x12r\n" +
+	"\x0fArticleCastJson\x12\x1f.blog.v1.ArticleCastJsonRequest\x1a\x1d.blog.v1.ArticleCastJsonReply\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/article/castjsonB\x17Z\x15agdemo/api/blog/v1;v1b\x06proto3"
 
 var (
 	file_api_blog_v1_blog_proto_rawDescOnce sync.Once
@@ -590,19 +701,21 @@ func file_api_blog_v1_blog_proto_rawDescGZIP() []byte {
 	return file_api_blog_v1_blog_proto_rawDescData
 }
 
-var file_api_blog_v1_blog_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_api_blog_v1_blog_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_api_blog_v1_blog_proto_goTypes = []any{
-	(*Article)(nil),              // 0: blog.v1.Article
-	(*CreateArticleRequest)(nil), // 1: blog.v1.CreateArticleRequest
-	(*CreateArticleReply)(nil),   // 2: blog.v1.CreateArticleReply
-	(*UpdateArticleRequest)(nil), // 3: blog.v1.UpdateArticleRequest
-	(*UpdateArticleReply)(nil),   // 4: blog.v1.UpdateArticleReply
-	(*DeleteArticleRequest)(nil), // 5: blog.v1.DeleteArticleRequest
-	(*DeleteArticleReply)(nil),   // 6: blog.v1.DeleteArticleReply
-	(*GetArticleRequest)(nil),    // 7: blog.v1.GetArticleRequest
-	(*GetArticleReply)(nil),      // 8: blog.v1.GetArticleReply
-	(*ListArticleRequest)(nil),   // 9: blog.v1.ListArticleRequest
-	(*ListArticleReply)(nil),     // 10: blog.v1.ListArticleReply
+	(*Article)(nil),                // 0: blog.v1.Article
+	(*CreateArticleRequest)(nil),   // 1: blog.v1.CreateArticleRequest
+	(*CreateArticleReply)(nil),     // 2: blog.v1.CreateArticleReply
+	(*UpdateArticleRequest)(nil),   // 3: blog.v1.UpdateArticleRequest
+	(*UpdateArticleReply)(nil),     // 4: blog.v1.UpdateArticleReply
+	(*DeleteArticleRequest)(nil),   // 5: blog.v1.DeleteArticleRequest
+	(*DeleteArticleReply)(nil),     // 6: blog.v1.DeleteArticleReply
+	(*GetArticleRequest)(nil),      // 7: blog.v1.GetArticleRequest
+	(*GetArticleReply)(nil),        // 8: blog.v1.GetArticleReply
+	(*ListArticleRequest)(nil),     // 9: blog.v1.ListArticleRequest
+	(*ListArticleReply)(nil),       // 10: blog.v1.ListArticleReply
+	(*ArticleCastJsonRequest)(nil), // 11: blog.v1.ArticleCastJsonRequest
+	(*ArticleCastJsonReply)(nil),   // 12: blog.v1.ArticleCastJsonReply
 }
 var file_api_blog_v1_blog_proto_depIdxs = []int32{
 	0,  // 0: blog.v1.CreateArticleReply.Article:type_name -> blog.v1.Article
@@ -614,13 +727,15 @@ var file_api_blog_v1_blog_proto_depIdxs = []int32{
 	5,  // 6: blog.v1.BlogService.DeleteArticle:input_type -> blog.v1.DeleteArticleRequest
 	7,  // 7: blog.v1.BlogService.GetArticle:input_type -> blog.v1.GetArticleRequest
 	9,  // 8: blog.v1.BlogService.ListArticle:input_type -> blog.v1.ListArticleRequest
-	2,  // 9: blog.v1.BlogService.CreateArticle:output_type -> blog.v1.CreateArticleReply
-	4,  // 10: blog.v1.BlogService.UpdateArticle:output_type -> blog.v1.UpdateArticleReply
-	6,  // 11: blog.v1.BlogService.DeleteArticle:output_type -> blog.v1.DeleteArticleReply
-	8,  // 12: blog.v1.BlogService.GetArticle:output_type -> blog.v1.GetArticleReply
-	10, // 13: blog.v1.BlogService.ListArticle:output_type -> blog.v1.ListArticleReply
-	9,  // [9:14] is the sub-list for method output_type
-	4,  // [4:9] is the sub-list for method input_type
+	11, // 9: blog.v1.BlogService.ArticleCastJson:input_type -> blog.v1.ArticleCastJsonRequest
+	2,  // 10: blog.v1.BlogService.CreateArticle:output_type -> blog.v1.CreateArticleReply
+	4,  // 11: blog.v1.BlogService.UpdateArticle:output_type -> blog.v1.UpdateArticleReply
+	6,  // 12: blog.v1.BlogService.DeleteArticle:output_type -> blog.v1.DeleteArticleReply
+	8,  // 13: blog.v1.BlogService.GetArticle:output_type -> blog.v1.GetArticleReply
+	10, // 14: blog.v1.BlogService.ListArticle:output_type -> blog.v1.ListArticleReply
+	12, // 15: blog.v1.BlogService.ArticleCastJson:output_type -> blog.v1.ArticleCastJsonReply
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
 	4,  // [4:4] is the sub-list for extension extendee
 	0,  // [0:4] is the sub-list for field type_name
@@ -637,7 +752,7 @@ func file_api_blog_v1_blog_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_blog_v1_blog_proto_rawDesc), len(file_api_blog_v1_blog_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

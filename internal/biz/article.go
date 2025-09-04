@@ -1,8 +1,10 @@
 package biz
 
 import (
+	pb "agdemo/api/blog/v1"
 	"context"
 	"errors"
+	"github.com/go-kratos/kratos/v2/encoding"
 	"github.com/go-kratos/kratos/v2/log"
 	"time"
 )
@@ -14,6 +16,15 @@ type Article struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Like      int64
+}
+
+func (a *Article) ToProto() *pb.Article {
+	return &pb.Article{
+		Id:      a.Id,
+		Title:   a.Title,
+		Content: a.Content,
+		Like:    a.Like, // 确保不遗漏字段
+	}
 }
 
 // biz/article.go
@@ -83,4 +94,14 @@ func (uc *ArticleUsecase) Update(ctx context.Context, id int64, article *Article
 
 func (uc *ArticleUsecase) Delete(ctx context.Context, id int64) error {
 	return uc.repo.DeleteArticle(ctx, id)
+}
+
+func (uc *ArticleUsecase) CastJson(ctx context.Context, article *Article) (string, error) {
+	jsonCodec := encoding.GetCodec("json")
+	bytes, err := jsonCodec.Marshal(article)
+	if err != nil {
+		log.Context(ctx).Errorf("CastJson|Marshal err:%v", err)
+		return "", err
+	}
+	return string(bytes), nil
 }

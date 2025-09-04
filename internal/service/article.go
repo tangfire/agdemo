@@ -2,9 +2,12 @@ package service
 
 import (
 	"agdemo/internal/biz"
+	"agdemo/internal/code"
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"go.opentelemetry.io/otel"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	pb "agdemo/api/blog/v1"
 )
@@ -17,26 +20,27 @@ func NewBlogService(article *biz.ArticleUsecase, logger log.Logger) *BlogService
 }
 
 func (s *BlogService) CreateArticle(ctx context.Context, req *pb.CreateArticleRequest) (*pb.CreateArticleReply, error) {
-	s.log.Infof("input data %v", req)
-	article := biz.Article{
+	// 1. 安全日志
+	s.log.WithContext(ctx).Infof(
+		"CreateArticle title_len:%d content_len:%d",
+		len(req.Title),
+		len(req.Content),
+	)
+
+	// 2. 创建并校验领域对象
+	article := &biz.Article{
 		Title:   req.Title,
 		Content: req.Content,
 	}
-	if err := article.Validate(); err != nil {
-		return nil, err
+
+	// 3. 执行业务逻辑
+	if err := s.article.Create(ctx, article); err != nil {
+		return nil, status.Error(codes.Internal, "创建文章失败")
 	}
 
-	err := s.article.Create(ctx, &article)
-	if err != nil {
-		return nil, err
-	}
-	// 3. 转换为响应
+	// 4. 转换响应
 	return &pb.CreateArticleReply{
-		Article: &pb.Article{
-			Id:      article.Id,
-			Title:   article.Title,
-			Content: article.Content,
-		},
+		Article: article.ToProto(),
 	}, nil
 }
 
@@ -61,7 +65,7 @@ func (s *BlogService) DeleteArticle(ctx context.Context, req *pb.DeleteArticleRe
 
 func (s *BlogService) GetArticle(ctx context.Context, req *pb.GetArticleRequest) (*pb.GetArticleReply, error) {
 	if req.Id < 1 {
-		return nil, pb.ErrorBlogInvalidId("invalid article id")
+		return nil, code.InvalidId
 	}
 	tr := otel.Tracer("api")
 	ctx, span := tr.Start(ctx, "GetArticle")
@@ -84,4 +88,17 @@ func (s *BlogService) ListArticle(ctx context.Context, req *pb.ListArticleReques
 		})
 	}
 	return reply, err
+}
+
+func (s *BlogService) ArticleCastJson(ctx context.Context, req *pb.ArticleCastJsonRequest) (*pb.ArticleCastJsonReply, error) {
+	article := &biz.Article{
+		Id:      req.Id,
+		Title:   req.Title,
+		Content: req.Content,
+	}
+	json, err := s.article.CastJson(ctx, article)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "转换文章json失败")
+	}
+	return &pb.ArticleCastJsonReply{Json: json}, nil
 }
