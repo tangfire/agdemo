@@ -3,7 +3,6 @@ package biz
 import (
 	pb "agdemo/api/blog/v1"
 	"context"
-	"errors"
 	"github.com/go-kratos/kratos/v2/encoding"
 	"github.com/go-kratos/kratos/v2/log"
 	"time"
@@ -25,18 +24,6 @@ func (a *Article) ToProto() *pb.Article {
 		Content: a.Content,
 		Like:    a.Like, // 确保不遗漏字段
 	}
-}
-
-// biz/article.go
-func (a *Article) Validate() error {
-	if len(a.Title) < 5 {
-		return errors.New("标题至少5个字符")
-	}
-	return nil
-}
-
-func (a *Article) IsPopular() bool {
-	return a.Like > 1000
 }
 
 type ArticleRepo interface {

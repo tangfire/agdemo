@@ -6,6 +6,9 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	otel_codes "go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -20,6 +23,19 @@ func NewBlogService(article *biz.ArticleUsecase, logger log.Logger) *BlogService
 }
 
 func (s *BlogService) CreateArticle(ctx context.Context, req *pb.CreateArticleRequest) (*pb.CreateArticleReply, error) {
+	// 获取tracer并创建span
+	tracer := otel.Tracer("article-service")
+	ctx, span := tracer.Start(ctx, "CreateArticle",
+		trace.WithAttributes(
+			attribute.String("method", "CreateArticle"),
+			attribute.String("request_title", req.Title),
+			attribute.String("request_content", req.Content),
+		))
+	defer span.End()
+
+	// 记录一些事件
+	span.AddEvent("开始处理业务逻辑")
+
 	// 1. 安全日志
 	s.log.WithContext(ctx).Infof(
 		"CreateArticle title_len:%d content_len:%d",
@@ -35,8 +51,16 @@ func (s *BlogService) CreateArticle(ctx context.Context, req *pb.CreateArticleRe
 
 	// 3. 执行业务逻辑
 	if err := s.article.Create(ctx, article); err != nil {
+		// 记录错误
+		span.RecordError(err)
+		span.SetStatus(otel_codes.Error, err.Error())
 		return nil, status.Error(codes.Internal, "创建文章失败")
 	}
+
+	//span.AddEvent("业务逻辑处理完成",
+	//	trace.WithAttributes(attribute.Int("result_count", len(result.Items))))
+
+	span.AddEvent("业务逻辑处理完成")
 
 	// 4. 转换响应
 	return &pb.CreateArticleReply{
@@ -50,9 +74,7 @@ func (s *BlogService) UpdateArticle(ctx context.Context, req *pb.UpdateArticleRe
 		Title:   req.Title,
 		Content: req.Content,
 	}
-	if err := article.Validate(); err != nil {
-		return nil, err
-	}
+
 	err := s.article.Update(ctx, req.Id, &article)
 	return &pb.UpdateArticleReply{}, err
 }

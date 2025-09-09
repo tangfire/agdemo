@@ -96,7 +96,12 @@ func (r *articleRepo) CreateArticle(ctx context.Context, a *biz.Article) error {
 func (r *articleRepo) UpdateArticle(ctx context.Context, id int64, a *biz.Article) error {
 	m := r.toModel(a)
 	m.Id = id // 确保更新目标ID正确
-	return r.data.db.WithContext(ctx).Updates(m).Error
+	err := r.data.db.WithContext(ctx).Updates(&m).Error
+	if err != nil {
+		r.log.Errorf("Update error: %v", err)
+		return err
+	}
+	return nil
 }
 
 func (r *articleRepo) DeleteArticle(ctx context.Context, id int64) error {

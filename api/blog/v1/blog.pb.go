@@ -652,16 +652,18 @@ const file_api_blog_v1_blog_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
 	"\acontent\x18\x03 \x01(\tR\acontent\x12\x12\n" +
-	"\x04like\x18\x04 \x01(\x03R\x04like\"Q\n" +
+	"\x04like\x18\x04 \x01(\x03R\x04like\"]\n" +
 	"\x14CreateArticleRequest\x12\x1f\n" +
-	"\x05title\x18\x01 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"@\n" +
+	"\x05title\x18\x01 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12$\n" +
+	"\acontent\x18\x02 \x01(\tB\n" +
+	"\xfaB\ar\x05\x10\x05\x18\xf4\x03R\acontent\"@\n" +
 	"\x12CreateArticleReply\x12*\n" +
-	"\aArticle\x18\x01 \x01(\v2\x10.blog.v1.ArticleR\aArticle\"j\n" +
+	"\aArticle\x18\x01 \x01(\v2\x10.blog.v1.ArticleR\aArticle\"v\n" +
 	"\x14UpdateArticleRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\x1f\n" +
-	"\x05title\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\"@\n" +
+	"\x05title\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12$\n" +
+	"\acontent\x18\x03 \x01(\tB\n" +
+	"\xfaB\ar\x05\x10\x05\x18\xf4\x03R\acontent\"@\n" +
 	"\x12UpdateArticleReply\x12*\n" +
 	"\aArticle\x18\x01 \x01(\v2\x10.blog.v1.ArticleR\aArticle\"&\n" +
 	"\x14DeleteArticleRequest\x12\x0e\n" +
@@ -673,11 +675,12 @@ const file_api_blog_v1_blog_proto_rawDesc = "" +
 	"\aArticle\x18\x01 \x01(\v2\x10.blog.v1.ArticleR\aArticle\"\x14\n" +
 	"\x12ListArticleRequest\">\n" +
 	"\x10ListArticleReply\x12*\n" +
-	"\aresults\x18\x01 \x03(\v2\x10.blog.v1.ArticleR\aresults\"l\n" +
+	"\aresults\x18\x01 \x03(\v2\x10.blog.v1.ArticleR\aresults\"x\n" +
 	"\x16ArticleCastJsonRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\x1f\n" +
-	"\x05title\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\"*\n" +
+	"\x05title\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x182R\x05title\x12$\n" +
+	"\acontent\x18\x03 \x01(\tB\n" +
+	"\xfaB\ar\x05\x10\x05\x18\xf4\x03R\acontent\"*\n" +
 	"\x14ArticleCastJsonReply\x12\x12\n" +
 	"\x04json\x18\x01 \x01(\tR\x04json2\xf1\x04\n" +
 	"\vBlogService\x12c\n" +

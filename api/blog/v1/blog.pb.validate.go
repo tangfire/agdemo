@@ -174,7 +174,16 @@ func (m *CreateArticleRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Content
+	if l := utf8.RuneCountInString(m.GetContent()); l < 5 || l > 500 {
+		err := CreateArticleRequestValidationError{
+			field:  "Content",
+			reason: "value length must be between 5 and 500 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return CreateArticleRequestMultiError(errors)
@@ -431,7 +440,16 @@ func (m *UpdateArticleRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Content
+	if l := utf8.RuneCountInString(m.GetContent()); l < 5 || l > 500 {
+		err := UpdateArticleRequestValidationError{
+			field:  "Content",
+			reason: "value length must be between 5 and 500 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return UpdateArticleRequestMultiError(errors)
@@ -1363,7 +1381,16 @@ func (m *ArticleCastJsonRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Content
+	if l := utf8.RuneCountInString(m.GetContent()); l < 5 || l > 500 {
+		err := ArticleCastJsonRequestValidationError{
+			field:  "Content",
+			reason: "value length must be between 5 and 500 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ArticleCastJsonRequestMultiError(errors)

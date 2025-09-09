@@ -2,6 +2,7 @@ package main
 
 import (
 	"agdemo/internal/conf"
+	"agdemo/internal/server"
 	"flag"
 	"fmt"
 	"github.com/go-kratos/kratos/v2/config"
@@ -47,6 +48,18 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 
 func main() {
 	flag.Parse()
+
+	// 初始化Tracer
+	shutdown, err := server.InitTracer("blog-service", "localhost:4318")
+	if err != nil {
+		// 处理错误，但不要panic，让服务继续运行
+		// 可以使用日志记录错误
+		log.Error("Failed to initialize tracer: %v", err)
+
+	}
+
+	// 确保在程序退出时关闭tracer
+	defer shutdown()
 
 	// 初始化 logrus 日志
 	logger := setupLogrus()

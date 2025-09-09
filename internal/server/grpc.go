@@ -3,7 +3,14 @@ package server
 import (
 	v1 "agdemo/api/blog/v1"
 	"agdemo/internal/conf"
+	"agdemo/internal/middleware"
+	myRatelimit "agdemo/internal/middleware/ratelimit"
 	"agdemo/internal/service"
+	"github.com/go-kratos/kratos/v2/middleware/logging"
+	"github.com/go-kratos/kratos/v2/middleware/ratelimit"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
+	"github.com/go-kratos/kratos/v2/middleware/validate"
+	"go.opentelemetry.io/otel"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -15,6 +22,13 @@ func NewGRPCServer(c *conf.Server, blog *service.BlogService, logger log.Logger)
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
+			middleware.FireShine(),
+			logging.Server(logger),
+			tracing.Server(
+				tracing.WithTracerProvider(otel.GetTracerProvider()),
+			),
+			validate.Validator(),
+			ratelimit.Server(ratelimit.WithLimiter(myRatelimit.NewTokenBucketLimiter(1, 5))),
 		),
 	}
 	if c.Grpc.Network != "" {

@@ -53,7 +53,7 @@ message Article {
 
 message CreateArticleRequest {
   string title = 1 [(validate.rules).string = {min_len: 5, max_len: 50}]; // the title of string must be between 5 and 50 character
-  string content = 2;
+  string content = 2 [(validate.rules).string = {min_len: 5, max_len: 500}];
 }
 
 message CreateArticleReply {
@@ -63,7 +63,7 @@ message CreateArticleReply {
 message UpdateArticleRequest {
   int64 id = 1 [(validate.rules).int64 = {gt: 0}];
   string title = 2 [(validate.rules).string = {min_len: 5, max_len: 50}]; // the title of string must be between 5 and 50 character;
-  string content = 3;
+  string content = 3 [(validate.rules).string = {min_len: 5, max_len: 500}];
 }
 
 message UpdateArticleReply {
@@ -94,7 +94,7 @@ message ListArticleReply {
 message ArticleCastJsonRequest{
   int64 id = 1 [(validate.rules).int64 = {gt: 0}];
   string title = 2 [(validate.rules).string = {min_len: 5, max_len: 50}]; // the title of string must be between 5 and 50 character;
-  string content = 3;
+  string content = 3 [(validate.rules).string = {min_len: 5, max_len: 500}];
 }
 
 message ArticleCastJsonReply{
